@@ -2,6 +2,7 @@ package com.osolve.thor.activity;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterManager;
 import com.osolve.thor.R;
 import com.osolve.thor.app.BaseFragmentActivity;
+import com.osolve.thor.fragment.ShopDetailFragment;
 import com.osolve.thor.model.CoffeeShop;
 import com.osolve.thor.model.ShopClusterItem;
 import com.osolve.thor.util.ViewHelper;
@@ -135,6 +137,24 @@ public class MainActivity extends BaseFragmentActivity
                 return false;
             }
         });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                ShopClusterItem item = renderer.getItemByMarker(marker);
+                changeToDetailFragment(item);
+                return false;
+            }
+        });
+    }
+
+    private void changeToDetailFragment(ShopClusterItem item) {
+        CoffeeShop shop = item.getShop();
+        ShopDetailFragment shopDetailFragment = ShopDetailFragment.newInstance(shop.getShopId());
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.fragmentContainer, shopDetailFragment);
+        fragmentTransaction.addToBackStack(MainActivity.class.getSimpleName());
+        fragmentTransaction.commit();
     }
 
     @Override
