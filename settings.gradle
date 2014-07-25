@@ -1,0 +1,1 @@
+include ':thor-android', ':libraries:thor-actionbarsherlock', ':libraries:thor-slidemenu', ':libraries:thor-android-map-utils'
