@@ -60,8 +60,8 @@ public class MainActivity extends BaseFragmentActivity
 
         shopListView = (ListView) findViewById(R.id.coffeeShopListView);
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) shopListView.getLayoutParams();
-        layoutParams.height = ViewHelper.getScreenHeight(this) / 2;
         layoutParams.topMargin = ViewHelper.getScreenHeight(this) / 2;
+        layoutParams.height = ViewHelper.getScreenHeight(this) - layoutParams.topMargin - ViewHelper.getNavigationBarHeight(this);
         shopListView.setLayoutParams(layoutParams);
 
         shopListAdapter = new ShopListAdapter();
@@ -94,8 +94,13 @@ public class MainActivity extends BaseFragmentActivity
     @Override
     protected void onResume() {
         super.onResume();
-//        setUpMapIfNeeded();
+        setUpMapIfNeeded();
         mLocationClient.connect();
+        if (android.os.Build.VERSION.SDK_INT >= 13) {
+            View decorView = getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
+        }
     }
 
     @Override
@@ -109,31 +114,51 @@ public class MainActivity extends BaseFragmentActivity
             SupportMapFragment shopMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
             mMap = shopMapFragment.getMap();
             if (mMap != null) {
-                clusterManager = new ClusterManager<ShopClusterItem>(MainActivity.this, mMap);
-                renderer = new CoffeeShopRender(MainActivity.this, mMap, clusterManager);
+                setUpClusterManager();
                 setUpMap();
             }
         }
     }
 
+    private void setUpClusterManager() {
+        clusterManager = new ClusterManager<ShopClusterItem>(MainActivity.this, mMap);
+        renderer = new CoffeeShopRender(MainActivity.this, mMap, clusterManager);
+        clusterManager.setRenderer(renderer);
+        mMap.setOnCameraChangeListener(clusterManager);
+    }
+
     private void setUpMap() {
-        System.out.println("set up map");
         mMap.setMyLocationEnabled(true);
         mMap.setPadding(0, 0, 0, ViewHelper.getScreenHeight(this) / 2);
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                if (!coffeeShops.isEmpty()) {
+                    return false;
+                }
+                listShopsFromCurrentLocation(mLocationClient.getLastLocation());
+                return false;
+            }
+        });
     }
 
     @Override
     public void onConnected(Bundle bundle) {
         Location lastLocation = mLocationClient.getLastLocation();
-        if (lastLocation == null) {
-            Log.e(TAG, "lastLocation is null, probably GPS is disable!");
-            return;
-        }
+        listShopsFromCurrentLocation(lastLocation);
 
         LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0f));
+    }
 
+    private Location listShopsFromCurrentLocation(Location lastLocation) {
+
+        if (lastLocation == null) {
+            Log.e(TAG, "lastLocation is null, probably GPS is disable!");
+            return null;
+        }
         listCoffeeShops(lastLocation);
+        return lastLocation;
     }
 
     private void listCoffeeShops(Location lastLocation) {
@@ -145,27 +170,20 @@ public class MainActivity extends BaseFragmentActivity
                     Log.d(TAG, "listCoffeeShop error:" + new String(error.networkResponse.data));
                     return null;
                 }
+                Log.d(TAG, "listCoffeeShop success:" + coffeeShops);
 
                 coffeeShops.clear();
                 coffeeShops.addAll(task.getResult());
 
-                clusterManager.setRenderer(renderer);
-
-                mMap.setOnCameraChangeListener(clusterManager);
-
                 shopListAdapter.reload(coffeeShops);
 
                 clusterItems.clear();
-                for (int i = 0; i < coffeeShops.size(); i++) {
-                    CoffeeShop shop = coffeeShops.get(i);
+                for (CoffeeShop shop : coffeeShops) {
                     ShopClusterItem shopItem = new ShopClusterItem(shop, new LatLng(shop.getLatitude(), shop.getLongitude()));
                     clusterItems.add(shopItem);
                 }
 
                 clusterManager.addItems(clusterItems);
-
-                Log.d(TAG, "listCoffeeShop success:" + coffeeShops);
-
                 return null;
             }
         });
