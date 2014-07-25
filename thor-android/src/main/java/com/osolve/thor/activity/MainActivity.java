@@ -61,7 +61,7 @@ public class MainActivity extends BaseFragmentActivity
         shopListView = (ListView) findViewById(R.id.coffeeShopListView);
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) shopListView.getLayoutParams();
         layoutParams.topMargin = ViewHelper.getScreenHeight(this) / 2;
-        layoutParams.height = ViewHelper.getScreenHeight(this) - layoutParams.topMargin - ViewHelper.getNavigationBarHeight(this);
+        layoutParams.height = ViewHelper.getScreenHeight(this) - layoutParams.topMargin - ViewHelper.getNavigationBarHeight(this) - ViewHelper.getStatusBarHeight(this);
         shopListView.setLayoutParams(layoutParams);
 
         shopListAdapter = new ShopListAdapter();
@@ -96,11 +96,6 @@ public class MainActivity extends BaseFragmentActivity
         super.onResume();
         setUpMapIfNeeded();
         mLocationClient.connect();
-        if (android.os.Build.VERSION.SDK_INT >= 13) {
-            View decorView = getWindow().getDecorView();
-            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-            decorView.setSystemUiVisibility(uiOptions);
-        }
     }
 
     @Override

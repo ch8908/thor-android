@@ -6,6 +6,8 @@ import android.graphics.Point;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.osolve.thor.activity.MainActivity;
+
 /**
  * Created by Kros on 7/25/14.
  */
@@ -56,5 +58,14 @@ public class ViewHelper {
 
     public static int toPixel(final Context context, final int dp) {
         return Math.round(context.getResources().getDisplayMetrics().density * dp);
+    }
+
+    public static int getStatusBarHeight(Context context) {
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            return resources.getDimensionPixelSize(resourceId);
+        }
+        return 0;
     }
 }
