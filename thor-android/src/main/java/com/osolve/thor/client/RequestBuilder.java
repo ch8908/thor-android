@@ -63,7 +63,11 @@ public class RequestBuilder {
             throw new IllegalArgumentException("path must start with slash '/' - " + pathStartWithSlash);
         }
 
-        path = pathStartWithSlash;
+        if (TextUtils.isEmpty(path)) {
+            path = pathStartWithSlash;
+        } else {
+            path += pathStartWithSlash;
+        }
         return this;
     }
 
@@ -122,7 +126,7 @@ public class RequestBuilder {
         this.params.putAll(params);
         return this;
     }
-    
+
     /**
      * complete the request with a volley error if received empty http response. if not specified.
      * prefer the emptyResponseValue in {@link #build(Class, Object)}'s
@@ -173,7 +177,7 @@ public class RequestBuilder {
     }
 
     private String convertParamsToString() {
-        if (params.isEmpty()) {
+        if (params == null || params.isEmpty()) {
             return "";
         }
         StringBuilder paramsString = new StringBuilder();

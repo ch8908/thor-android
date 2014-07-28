@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 
-import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.osolve.thor.R;
@@ -48,17 +47,7 @@ public class BaseFragmentActivity extends SlidingFragmentActivity {
         sm.setFadeDegree(0.35f);
         sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                toggle();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override

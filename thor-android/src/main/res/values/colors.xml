@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="shop_list_view_bg">#BB000000</color>
-    <color name="detail_fragment_bg_color">#FFFFFF</color>
+    <color name="detail_fragment_bg_color">#000000</color>
+    <color name="shop_detail_text_color">#FFFFFFFF</color>
+    <color name="shop_title_text_color">#FF0000FF</color>
 </resources>

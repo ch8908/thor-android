@@ -4,4 +4,16 @@
     android:layout_height="match_parent"
     android:background="@color/detail_fragment_bg_color">
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pictureViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+    <ListView
+        android:id="@+id/informationListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/pictureViewPager"
+        />
+
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.osolve.thor.client;
 import com.android.volley.RequestQueue;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.osolve.thor.model.CoffeeShop;
+import com.osolve.thor.model.ShopDto;
 import com.osolve.thor.model.UserLoginInfo;
 
 import java.util.List;
@@ -48,4 +49,13 @@ public class ApiClient {
                 .build(UserLoginInfo.class)
                 .request();
     }
+
+    public Task<ShopDto> fetchShopDetailWithId(String shopId) {
+        return builder().withHttpGetAllowCache()
+                .withPath("/v1/shops")
+                .withPath("/" + shopId)
+                .build(ShopDto.class)
+                .request();
+    }
+
 }

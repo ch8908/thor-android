@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.android.volley.VolleyError;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -106,6 +107,21 @@ public class MainActivity extends BaseFragmentActivity
         super.onPause();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                boolean popped = getSupportFragmentManager().popBackStackImmediate();
+                if (!popped) {
+                    toggle();
+                }
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setUpMapIfNeeded() {
         if (mMap == null) {
             SupportMapFragment shopMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -133,7 +149,13 @@ public class MainActivity extends BaseFragmentActivity
                 if (!coffeeShops.isEmpty()) {
                     return false;
                 }
-                listShopsFromCurrentLocation(mLocationClient.getLastLocation());
+
+                Location lastLocation = mLocationClient.getLastLocation();
+                if (lastLocation == null) {
+                    Log.e(TAG, "lastLocation is null, probably GPS is disable!");
+                    return false;
+                }
+                listCoffeeShops(lastLocation);
                 return false;
             }
         });
@@ -143,6 +165,7 @@ public class MainActivity extends BaseFragmentActivity
             public boolean onMarkerClick(Marker marker) {
                 ShopClusterItem item = renderer.getItemByMarker(marker);
                 changeToDetailFragment(item);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 return false;
             }
         });
@@ -152,7 +175,7 @@ public class MainActivity extends BaseFragmentActivity
         CoffeeShop shop = item.getShop();
         ShopDetailFragment shopDetailFragment = ShopDetailFragment.newInstance(shop.getShopId());
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragmentContainer, shopDetailFragment);
+        fragmentTransaction.add(R.id.fragmentContainer, shopDetailFragment, ShopDetailFragment.class.getSimpleName());
         fragmentTransaction.addToBackStack(MainActivity.class.getSimpleName());
         fragmentTransaction.commit();
     }
@@ -160,20 +183,15 @@ public class MainActivity extends BaseFragmentActivity
     @Override
     public void onConnected(Bundle bundle) {
         Location lastLocation = mLocationClient.getLastLocation();
-        listShopsFromCurrentLocation(lastLocation);
+        if (lastLocation == null) {
+            Log.e(TAG, "lastLocation is null, probably GPS is disable!");
+            return;
+        }
+
+        listCoffeeShops(lastLocation);
 
         LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0f));
-    }
-
-    private Location listShopsFromCurrentLocation(Location lastLocation) {
-
-        if (lastLocation == null) {
-            Log.e(TAG, "lastLocation is null, probably GPS is disable!");
-            return null;
-        }
-        listCoffeeShops(lastLocation);
-        return lastLocation;
     }
 
     private void listCoffeeShops(Location lastLocation) {

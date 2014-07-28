@@ -4,6 +4,7 @@ import android.location.Location;
 
 import com.osolve.thor.client.ApiClient;
 import com.osolve.thor.model.CoffeeShop;
+import com.osolve.thor.model.ShopDto;
 import com.osolve.thor.model.UserLoginInfo;
 
 import java.util.List;
@@ -27,5 +28,9 @@ public class CoffeeShopDaemon extends BaseDaemon {
 
     public Task<UserLoginInfo> login(String email, String password) {
         return apiClient.login(email, password);
+    }
+
+    public Task<ShopDto> shopDetailWithId(String shopId) {
+        return apiClient.fetchShopDetailWithId(shopId);
     }
 }

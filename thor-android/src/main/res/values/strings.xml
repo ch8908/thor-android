@@ -3,5 +3,11 @@
 
     <string name="app_name">thor</string>
     <string name="title_activity_main">Shop List</string>
+    <string name="shopDetail.name_title">Name</string>
+    <string name="shopDetail.address">Address</string>
+    <string name="shopDetail.description">Description</string>
+    <string name="shopDetail.hours">Hours</string>
+    <string name="shopDetail.website_url">Website</string>
+    <string name="shopDetail.avg_rating">Average Rating</string>
 
 </resources>
