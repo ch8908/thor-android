@@ -2,19 +2,22 @@ package com.osolve.thor.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.osolve.thor.R;
+import com.osolve.thor.app.BaseListFragment;
+import com.osolve.thor.fragment.event.AddShopEvent;
+import com.osolve.thor.fragment.event.SignInEvent;
 
 /**
  * Created by Kros on 7/24/14.
  */
-public class LeftMenuListFragment extends ListFragment {
+public class LeftMenuListFragment extends BaseListFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,11 +35,27 @@ public class LeftMenuListFragment extends ListFragment {
     }
 
     @Override
+    public void onListItemClick(ListView listView, View view, int position, long id) {
+        switch (position) {
+            case 0:
+                bean().postBusEvent(new AddShopEvent());
+                break;
+            case 1:
+                bean().postBusEvent(new SignInEvent());
+                break;
+            case 2:
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         SampleAdapter adapter = new SampleAdapter(getActivity());
-        adapter.add("Title1");
-        adapter.add("Title2");
+        adapter.add("Add Shop");
+        adapter.add("Sign In");
         adapter.add("Title3");
         setListAdapter(adapter);
     }

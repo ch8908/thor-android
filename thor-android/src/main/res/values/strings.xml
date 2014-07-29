@@ -9,5 +9,10 @@
     <string name="shopDetail.hours">Hours</string>
     <string name="shopDetail.website_url">Website</string>
     <string name="shopDetail.avg_rating">Average Rating</string>
+    <string name="addShop.name">Name</string>
+    <string name="addShop.phone">Phone Number</string>
+    <string name="addShop.website">Website</string>
+    <string name="addShop.description">Description</string>
+    <string name="addShop.address">Address</string>
 
 </resources>

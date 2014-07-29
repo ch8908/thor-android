@@ -1,5 +1,6 @@
 package com.osolve.thor.activity;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -22,12 +23,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterManager;
 import com.osolve.thor.R;
 import com.osolve.thor.app.BaseFragmentActivity;
+import com.osolve.thor.fragment.AddShopActivity;
 import com.osolve.thor.fragment.ShopDetailFragment;
+import com.osolve.thor.fragment.event.AddShopEvent;
+import com.osolve.thor.fragment.event.SignInEvent;
 import com.osolve.thor.model.CoffeeShop;
 import com.osolve.thor.model.ShopClusterItem;
 import com.osolve.thor.util.ViewHelper;
 import com.osolve.thor.view.CoffeeShopRender;
 import com.osolve.thor.view.ShopListAdapter;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +53,7 @@ public class MainActivity extends BaseFragmentActivity
     private final List<ShopClusterItem> clusterItems = new ArrayList<>();
     private ClusterManager<ShopClusterItem> clusterManager;
     private CoffeeShopRender renderer;
-
+    
     public MainActivity() {
         super();
     }
@@ -165,7 +170,6 @@ public class MainActivity extends BaseFragmentActivity
             public boolean onMarkerClick(Marker marker) {
                 ShopClusterItem item = renderer.getItemByMarker(marker);
                 changeToDetailFragment(item);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 return false;
             }
         });
@@ -230,4 +234,24 @@ public class MainActivity extends BaseFragmentActivity
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
+
+    @Subscribe
+    public void onAddShopEvent(final AddShopEvent event) {
+        openAddShopActivity();
+    }
+
+    private void openAddShopActivity() {
+        Intent intent = new Intent(this, AddShopActivity.class);
+        startActivity(intent);
+    }
+
+    @Subscribe
+    public void onSignInEvent(final SignInEvent event) {
+        openToSignInActivity();
+    }
+
+    private void openToSignInActivity() {
+
+    }
+
 }
