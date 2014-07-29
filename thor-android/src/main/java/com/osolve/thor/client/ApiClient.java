@@ -7,6 +7,7 @@ import com.osolve.thor.model.ShopDto;
 import com.osolve.thor.model.UserLoginInfo;
 
 import java.util.List;
+import java.util.Map;
 
 import bolts.Task;
 
@@ -58,4 +59,11 @@ public class ApiClient {
                 .request();
     }
 
+    public Task<ShopDto> postNewShop(Map<String, String> params) {
+        return builder().withHttpPost()
+                .withPath("/v1/shops")
+                .withAddParams(params)
+                .build(ShopDto.class)
+                .request();
+    }
 }

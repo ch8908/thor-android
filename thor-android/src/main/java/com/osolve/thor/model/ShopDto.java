@@ -3,10 +3,13 @@ package com.osolve.thor.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
+
 /**
  * Created by Kros on 7/28/14.
  */
-public class ShopDto {
+public class ShopDto implements Serializable {
+
     private final String shopId;
     private final String name;
     private final double lat;

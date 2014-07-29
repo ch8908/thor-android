@@ -36,6 +36,8 @@
         android:id="@+id/addressEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:minLines="2"
         android:layout_below="@id/addressTitleTextView"/>
 
     <ScrollView
@@ -43,9 +45,11 @@
         android:layout_height="match_parent"
         android:layout_below="@id/addressEditText">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
 
             <TextView
                 android:id="@+id/shopNameTextView"
@@ -58,13 +62,12 @@
                 android:id="@+id/shopNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/shopNameTextView"/>
+                />
 
             <TextView
                 android:id="@+id/phoneTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/shopNameEditText"
                 android:text="@string/addShop.phone"
                 />
 
@@ -72,36 +75,48 @@
                 android:id="@+id/phoneEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/phoneTextView"
                 android:inputType="phone"/>
+
+            <TextView
+                android:id="@+id/hoursTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/addShop.hours"
+                />
+
+            <EditText
+                android:id="@+id/hoursEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
 
             <TextView
                 android:id="@+id/websiteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/addShop.website"
-                android:layout_below="@id/phoneEditText"/>
+                />
 
             <EditText
                 android:id="@+id/websiteEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/websiteTextView"/>
+                />
 
             <TextView
                 android:id="@+id/descriptionTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/addShop.description"
-                android:layout_below="@id/websiteEditText"/>
+                />
 
             <EditText
                 android:id="@+id/descriptionEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/descriptionTextView"/>
+                />
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </ScrollView>
 

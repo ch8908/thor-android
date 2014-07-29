@@ -14,5 +14,7 @@
     <string name="addShop.website">Website</string>
     <string name="addShop.description">Description</string>
     <string name="addShop.address">Address</string>
+    <string name="addShop.hours">Hours</string>
+    <string name="addShop.menu.add_shop">Add</string>
 
 </resources>

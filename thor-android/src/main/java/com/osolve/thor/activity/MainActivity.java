@@ -43,6 +43,10 @@ import bolts.Task;
 public class MainActivity extends BaseFragmentActivity
         implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
 
+    enum MainRequestCode {
+        ADD_SHOP_REQUEST_CODE
+    }
+
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationClient mLocationClient;
 
@@ -53,7 +57,7 @@ public class MainActivity extends BaseFragmentActivity
     private final List<ShopClusterItem> clusterItems = new ArrayList<>();
     private ClusterManager<ShopClusterItem> clusterManager;
     private CoffeeShopRender renderer;
-    
+
     public MainActivity() {
         super();
     }
@@ -127,6 +131,26 @@ public class MainActivity extends BaseFragmentActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (MainRequestCode.ADD_SHOP_REQUEST_CODE.ordinal() == requestCode) {
+            if (resultCode == RESULT_OK) {
+                CoffeeShop newShop = AddShopActivity.getNewShop(data);
+                LatLng latLng = new LatLng(newShop.getLatitude(), newShop.getLongitude());
+
+                shopListAdapter.add(newShop);
+                shopListView.setSelection(shopListAdapter.getCount());
+
+                ShopClusterItem newClusterItem = new ShopClusterItem(newShop, latLng);
+                clusterManager.addItem(newClusterItem);
+                clusterItems.add(newClusterItem);
+                clusterManager.cluster();
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0f));
+            }
+        }
+    }
+
     private void setUpMapIfNeeded() {
         if (mMap == null) {
             SupportMapFragment shopMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -192,6 +216,10 @@ public class MainActivity extends BaseFragmentActivity
             return;
         }
 
+        if (!coffeeShops.isEmpty()) {
+            return;
+        }
+
         listCoffeeShops(lastLocation);
 
         LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
@@ -242,7 +270,8 @@ public class MainActivity extends BaseFragmentActivity
 
     private void openAddShopActivity() {
         Intent intent = new Intent(this, AddShopActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, MainRequestCode.ADD_SHOP_REQUEST_CODE.ordinal());
+        toggle();
     }
 
     @Subscribe

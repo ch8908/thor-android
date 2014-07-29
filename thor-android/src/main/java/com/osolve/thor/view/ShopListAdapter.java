@@ -15,6 +15,7 @@ import java.util.List;
 public class ShopListAdapter extends BaseAdapter {
 
     private static class ViewHolder {
+
         TextView name;
     }
 
@@ -63,8 +64,16 @@ public class ShopListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void setSelectedIssue(final CoffeeShop shop) {
+    public void setSelectedShop(final CoffeeShop shop) {
         selectedShop = shop;
+        notifyDataSetChanged();
+    }
+
+    public void add(final CoffeeShop newShop) {
+        if (shops.contains(newShop)) {
+            return;
+        }
+        shops.add(newShop);
         notifyDataSetChanged();
     }
 
