@@ -84,6 +84,7 @@ public class SignUpFragment extends BaseFragment {
                         Log.d(TAG, "Sign Up error:" + signUpError + " json:" + new String(error.networkResponse.data));
                     } catch (IOException e) {
                         Log.d(TAG, "Sign Up error mapped failed");
+                        e.printStackTrace();
                     }
                     return null;
                 }

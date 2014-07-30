@@ -21,6 +21,9 @@
     <string name="signIn.password_hint">Your password</string>
     <string name="signIn.sign_up_button_title">Sign Up</string>
     <string name="signIn.confirm_password_hint">Input your password again</string>
+    <string name="signIn.password_is_empty">Password is empty</string>
+    <string name="signIn.email_is_empty">Email is empty</string>
+    <string name="signIn.sign_in_failed">Email or password not correct</string>
     <string name="signUp.register_button_title">Register</string>
     <string name="signUp.password_is_not_the_same">Password is not the same</string>
     <string name="signIn.sign_in_welcome">Please Sign In</string>

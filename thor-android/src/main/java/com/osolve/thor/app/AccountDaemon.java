@@ -8,7 +8,6 @@ import com.osolve.thor.model.UserLoginInfo;
 import com.osolve.thor.state.AbstractState;
 import com.osolve.thor.state.StateMachine;
 
-import bolts.Continuation;
 import bolts.Task;
 
 /**
@@ -46,17 +45,8 @@ public class AccountDaemon extends BaseDaemon {
         stateMachine.trigger(trigger);
     }
 
-    public void signIn(final String email, final String password) {
-        apiClient.login(email, password).continueWith(new Continuation<UserLoginInfo, Object>() {
-            @Override
-            public Object then(Task<UserLoginInfo> task) throws Exception {
-                if (task.isFaulted()) {
-                    return null;
-                }
-
-                return null;
-            }
-        });
+    public Task<UserLoginInfo> signIn(final String email, final String password) {
+        return apiClient.login(email, password);
     }
 
     public Task<SignUpResult> signUp(final String email, final String password) {
