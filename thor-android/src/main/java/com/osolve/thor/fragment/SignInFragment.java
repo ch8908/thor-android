@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.osolve.json.ClientJsonMapper;
 import com.osolve.thor.R;
 import com.osolve.thor.app.BaseFragment;
+import com.osolve.thor.fragment.event.SignInSuccessEvent;
 import com.osolve.thor.fragment.event.SignUpEvent;
 import com.osolve.thor.model.UserLoginInfo;
 
@@ -85,9 +86,8 @@ public class SignInFragment extends BaseFragment {
                     try {
                         ClientJsonMapper mapper = ClientJsonMapper.getInstance();
                         SignInError signUpError = mapper.readValue(error.networkResponse.data, SignInError.class);
-                        StringBuilder errorMessage = new StringBuilder();
                         if (signUpError.getErrorMessage() != null) {
-                            errorMessageTextView.setText(errorMessage.toString());
+                            errorMessageTextView.setText(signUpError.getErrorMessage());
                         }
                         Log.d(TAG, "Sign In error:" + signUpError + " json:" + new String(error.networkResponse.data));
                     } catch (IOException e) {
@@ -97,6 +97,7 @@ public class SignInFragment extends BaseFragment {
                     return null;
                 }
 
+                bean().postBusEvent(new SignInSuccessEvent());
                 Log.d(TAG, "Sign In Successfully");
 
                 return null;

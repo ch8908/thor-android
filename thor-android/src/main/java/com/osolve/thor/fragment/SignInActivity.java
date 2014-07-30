@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.osolve.thor.R;
 import com.osolve.thor.app.BaseFragmentActivity;
+import com.osolve.thor.fragment.event.SignInSuccessEvent;
 import com.osolve.thor.fragment.event.SignUpEvent;
 import com.squareup.otto.Subscribe;
 
@@ -28,6 +29,11 @@ public class SignInActivity extends BaseFragmentActivity {
         fragmentTransaction.add(R.id.fragmentContainer, new SignUpFragment(), SignUpFragment.class.getSimpleName());
         fragmentTransaction.addToBackStack(SignInActivity.class.getSimpleName());
         fragmentTransaction.commit();
+    }
+
+    @Subscribe
+    public void onSignInSuccess(final SignInSuccessEvent event) {
+        finish();
     }
 }
 

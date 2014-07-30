@@ -8,6 +8,7 @@ import com.osolve.thor.model.UserLoginInfo;
 import com.osolve.thor.state.AbstractState;
 import com.osolve.thor.state.StateMachine;
 
+import bolts.Continuation;
 import bolts.Task;
 
 /**
@@ -39,18 +40,30 @@ public class AccountDaemon extends BaseDaemon {
         }
     }
 
-    private void triggerLoggedIn() {
-        CoffeeShopClientTrigger trigger = new CoffeeShopClientTrigger();
-        trigger.loggedIn = true;
-        stateMachine.trigger(trigger);
+    public Task<UserLoginInfo> signIn(final String email, final String password) {
+        return apiClient.login(email, password).onSuccess(new Continuation<UserLoginInfo, UserLoginInfo>() {
+            @Override
+            public UserLoginInfo then(Task<UserLoginInfo> task) throws Exception {
+                UserLoginInfo result = task.getResult();
+                loggedIn(result.getAuthToken(), result.getName());
+                return task.getResult();
+            }
+        });
     }
 
-    public Task<UserLoginInfo> signIn(final String email, final String password) {
-        return apiClient.login(email, password);
+    private void loggedIn(final String authToken, final String name) {
+        pref.saveAuthToken(authToken);
+        pref.userName.set(name);
+        triggerLoggedIn();
     }
 
     public Task<SignUpResult> signUp(final String email, final String password) {
         return apiClient.postSignUp(email, password, password);
     }
 
+    private void triggerLoggedIn() {
+        CoffeeShopClientTrigger trigger = new CoffeeShopClientTrigger();
+        trigger.loggedIn = true;
+        stateMachine.trigger(trigger);
+    }
 }
