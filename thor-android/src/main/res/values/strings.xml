@@ -16,5 +16,13 @@
     <string name="addShop.address">Address</string>
     <string name="addShop.hours">Hours</string>
     <string name="addShop.menu.add_shop">Add</string>
+    <string name="signIn.sign_in_button_title">Sign In</string>
+    <string name="signIn.email_hint">Your email</string>
+    <string name="signIn.password_hint">Your password</string>
+    <string name="signIn.sign_up_button_title">Sign Up</string>
+    <string name="signIn.confirm_password_hint">Input your password again</string>
+    <string name="signUp.register_button_title">Register</string>
+    <string name="signUp.password_is_not_the_same">Password is not the same</string>
+    <string name="signIn.sign_in_welcome">Please Sign In</string>
 
 </resources>

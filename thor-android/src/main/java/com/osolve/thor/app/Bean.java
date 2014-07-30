@@ -17,6 +17,7 @@ public class Bean {
 
     public final Bus bus;
     public final CoffeeShopDaemon coffeeShopDaemon;
+    public final AccountDaemon accountDaemon;
 
     public Bean(final Application application) {
         bus = new Bus();
@@ -26,8 +27,10 @@ public class Bean {
         volleyEnv = new VolleyEnv(application);
 
         ApiClient apiClient = new ApiClient(volleyEnv.getRequestQueue());
+        Pref pref = new Pref(application);
 
         coffeeShopDaemon = new CoffeeShopDaemon(this, apiClient);
+        accountDaemon = new AccountDaemon(this, apiClient, pref);
     }
 
     public void postBusEvent(final Object event) {
@@ -48,5 +51,10 @@ public class Bean {
 
     public void unregisterFromEventBus(final Object host) {
         bus.unregister(host);
+    }
+
+    public void terminate() {
+        coffeeShopDaemon.terminate();
+        accountDaemon.terminate();
     }
 }

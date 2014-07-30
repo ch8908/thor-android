@@ -53,4 +53,9 @@ public class CoffeeShopDaemon extends BaseDaemon {
 
         return apiClient.postNewShop(params);
     }
+
+    @Override
+    public void terminate() {
+
+    }
 }

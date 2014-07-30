@@ -4,6 +4,7 @@ import com.android.volley.RequestQueue;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.osolve.thor.model.CoffeeShop;
 import com.osolve.thor.model.ShopDto;
+import com.osolve.thor.model.SignUpResult;
 import com.osolve.thor.model.UserLoginInfo;
 
 import java.util.List;
@@ -64,6 +65,16 @@ public class ApiClient {
                 .withPath("/v1/shops")
                 .withAddParams(params)
                 .build(ShopDto.class)
+                .request();
+    }
+
+    public Task<SignUpResult> postSignUp(final String email, final String password, final String confirmPassword) {
+        return builder().withHttpPost()
+                .withPath("/v1/users/sign_up")
+                .withAddParam("email", email)
+                .withAddParam("password", password)
+                .withAddParam("password_confirmation", confirmPassword)
+                .build(SignUpResult.class)
                 .request();
     }
 }

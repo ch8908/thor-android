@@ -5,7 +5,7 @@ import android.content.Context;
 /**
  * Created by Kros on 7/22/14.
  */
-public class BaseDaemon {
+public abstract class BaseDaemon implements IDaemon {
     private final Bean bean;
 
     private final Context context;
@@ -15,7 +15,7 @@ public class BaseDaemon {
         context = bean.context;
     }
 
-    public Bean bean() {
+    protected Bean bean() {
         return bean;
     }
 

@@ -17,4 +17,10 @@ public class ThorApplication extends Application {
         super.onCreate();
         bean = new Bean(this);
     }
+
+    @Override
+    public void onTerminate() {
+        bean.terminate();
+        super.onTerminate();
+    }
 }

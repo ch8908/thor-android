@@ -25,6 +25,7 @@ import com.osolve.thor.R;
 import com.osolve.thor.app.BaseFragmentActivity;
 import com.osolve.thor.fragment.AddShopActivity;
 import com.osolve.thor.fragment.ShopDetailFragment;
+import com.osolve.thor.fragment.SignInActivity;
 import com.osolve.thor.fragment.event.AddShopEvent;
 import com.osolve.thor.fragment.event.SignInEvent;
 import com.osolve.thor.model.CoffeeShop;
@@ -44,7 +45,7 @@ public class MainActivity extends BaseFragmentActivity
         implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
 
     enum MainRequestCode {
-        ADD_SHOP_REQUEST_CODE
+        ADD_SHOP_REQUEST_CODE, SIGN_IN_REQUEST_CODE,
     }
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -280,7 +281,8 @@ public class MainActivity extends BaseFragmentActivity
     }
 
     private void openToSignInActivity() {
-
+        Intent intent = new Intent(this, SignInActivity.class);
+        startActivityForResult(intent, MainRequestCode.SIGN_IN_REQUEST_CODE.ordinal());
+        toggle();
     }
-
 }
