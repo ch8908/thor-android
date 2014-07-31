@@ -1,5 +1,7 @@
 package com.osolve.thor.app;
 
+import android.text.TextUtils;
+
 import com.osolve.thor.client.ApiClient;
 import com.osolve.thor.client.state.CoffeeClientIdleState;
 import com.osolve.thor.client.state.CoffeeShopClientTrigger;
@@ -35,7 +37,7 @@ public class AccountDaemon extends BaseDaemon {
         stateMachine = new StateMachine<AbstractState>(new CoffeeClientIdleState());
         stateMachine.initialize();
 
-        if (pref.findAuthToken() != null) {
+        if (pref.findAuthToken() != null && !TextUtils.isEmpty(pref.findAuthToken())) {
             triggerLoggedIn();
         }
     }
@@ -64,6 +66,28 @@ public class AccountDaemon extends BaseDaemon {
     private void triggerLoggedIn() {
         CoffeeShopClientTrigger trigger = new CoffeeShopClientTrigger();
         trigger.loggedIn = true;
+        stateMachine.trigger(trigger);
+    }
+
+    public void askIsLoggedIn() {
+        triggerIsLoggedIn();
+    }
+
+    private void triggerIsLoggedIn() {
+        CoffeeShopClientTrigger trigger = new CoffeeShopClientTrigger();
+        trigger.isLoggedIn = true;
+        stateMachine.trigger(trigger);
+    }
+
+    public void signOut() {
+        pref.removeAuthToken();
+        System.out.println(">>>>>>>>>>>>> token:" + pref.findAuthToken());
+        triggerIdleState();
+    }
+
+    private void triggerIdleState() {
+        CoffeeShopClientTrigger trigger = new CoffeeShopClientTrigger();
+        trigger.logOut = true;
         stateMachine.trigger(trigger);
     }
 }

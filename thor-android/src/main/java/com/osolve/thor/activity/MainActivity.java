@@ -28,6 +28,7 @@ import com.osolve.thor.fragment.ShopDetailFragment;
 import com.osolve.thor.fragment.SignInActivity;
 import com.osolve.thor.fragment.event.AddShopEvent;
 import com.osolve.thor.fragment.event.SignInEvent;
+import com.osolve.thor.fragment.event.SignInSuccessEvent;
 import com.osolve.thor.model.CoffeeShop;
 import com.osolve.thor.model.ShopClusterItem;
 import com.osolve.thor.util.ViewHelper;
@@ -148,6 +149,11 @@ public class MainActivity extends BaseFragmentActivity
                 clusterItems.add(newClusterItem);
                 clusterManager.cluster();
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0f));
+            }
+        }
+        if (MainRequestCode.SIGN_IN_REQUEST_CODE.ordinal() == requestCode) {
+            if (resultCode == RESULT_OK) {
+                bean().postBusEvent(new SignInSuccessEvent());
             }
         }
     }

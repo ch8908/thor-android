@@ -7,5 +7,6 @@ import com.osolve.thor.state.IStateMachineTrigger;
  */
 public class CoffeeShopClientTrigger implements IStateMachineTrigger {
     public boolean loggedIn;
-    public boolean logout;
+    public boolean logOut;
+    public boolean isLoggedIn;
 }

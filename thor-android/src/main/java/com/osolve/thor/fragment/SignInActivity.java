@@ -33,6 +33,7 @@ public class SignInActivity extends BaseFragmentActivity {
 
     @Subscribe
     public void onSignInSuccess(final SignInSuccessEvent event) {
+        setResult(RESULT_OK);
         finish();
     }
 }
